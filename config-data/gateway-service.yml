@@ -21,10 +21,10 @@ spring:
           uri: lb://desktop-service
           predicates:
             - Path=/desktop/**
-        - id: movil-service
-          uri: lb://movil-service
+        - id: movile-service
+          uri: lb://movile-service
           predicates:
-            - Path=/movil/**
+            - Path=/movile/**
         - id: asp-service
           uri: lb://asp-service
           predicates:

@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: spa-service
+          uri: lb://spa-service
+          predicates:
+            - Path=/spa/**
+        - id: desktop-service
+          uri: lb://desktop-service
+          predicates:
+            - Path=/desktop/**
+        - id: movil-service
+          uri: lb://movil-service
+          predicates:
+            - Path=/movil/**
+        - id: asp-service
+          uri: lb://asp-service
+          predicates:
+            - Path=/asp/**

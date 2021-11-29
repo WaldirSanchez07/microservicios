@@ -1,6 +1,6 @@
 spring:
   application:
-    name: service-asp
+    name: asp-service
   cloud:
     config:
       uri: http://localhost:8081

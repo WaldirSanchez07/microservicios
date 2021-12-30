@@ -14,4 +14,5 @@ ngrok:
 
 eureka:
   instance:
-    status-page-url: https://e8b5-181-64-18-31.ngrok.io/desktop/listar
+    hostname: 746d-190-43-38-61.ngrok.io
+    status-page-url:  https://746d-190-43-38-61.ngrok.io/spa/listar

@@ -24,7 +24,7 @@ public class SolicitudController {
     @Autowired
     private MailService mailService;
 
-    @PostMapping(value = "registrar")
+    @PostMapping(value = "registrar", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Solicitud> saveSolicitudes(@RequestBody Solicitud solicitud){
         Solicitud sol = solicitudService.getSolicitud(solicitud.getDni());
         if(sol != null){
@@ -43,7 +43,7 @@ public class SolicitudController {
         return ResponseEntity.status(HttpStatus.CREATED).body(solicitud);
     }
 
-    @GetMapping(value = "listar")
+    @GetMapping(value = "listar", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<Solicitud>> listSolicitudes(){
         List<Solicitud> solicituds = new ArrayList<>();
         solicituds = solicitudService.listar();
@@ -57,7 +57,7 @@ public class SolicitudController {
         return ResponseEntity.ok(solicituds);
     }
 
-    @GetMapping(value = "consultar")
+    @GetMapping(value = "consultar", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Solicitud> listSolicitudes(@RequestParam(value = "dni") String dni){
         Solicitud sol;
         sol = solicitudService.getSolicitud(dni);
@@ -67,7 +67,7 @@ public class SolicitudController {
         return ResponseEntity.ok(sol);
     }
 
-    @PutMapping(value = "actualizar")
+    @PutMapping(value = "actualizar", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Solicitud> updateSolicitud(@RequestBody ObjectNode obj){
         Solicitud sol = solicitudService.updateSolicitud(obj.get("dni").asText(), obj.get("estado").asInt());
         if(Objects.isNull(sol)){
@@ -78,7 +78,7 @@ public class SolicitudController {
         return ResponseEntity.ok(sol);
     }
 
-    @DeleteMapping(value = "eliminar")
+    @DeleteMapping(value = "eliminar", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> deleteSolicitudes(@RequestParam(value = "dni") String dni){
         String msj = "";
         if(null == dni){

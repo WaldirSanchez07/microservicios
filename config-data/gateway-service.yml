@@ -14,13 +14,13 @@ spring:
           enabled: true
       routes:
         - id: spa-service
-          uri: lb://spa-service
+          uri: https://746d-190-43-38-61.ngrok.io/
           predicates:
             - Path=/spa/**
         - id: desktop-service
           uri: https://e8b5-181-64-18-31.ngrok.io/
           predicates:
-            - Path=/desktop/**
+            - Path=/financiera/**
         - id: movile-service
           uri: lb://movile-service
           predicates:

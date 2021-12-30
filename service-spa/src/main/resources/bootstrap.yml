@@ -2,7 +2,16 @@ spring:
   application:
     name: spa-service
   cloud:
+    compatibility-verifier:
+      enabled: false
     config:
-      uri: http://localhost:8081
+      uri: http://209.145.60.40:8081
       username: root
       password: s3cr3t
+
+ngrok:
+  enabled: true
+
+eureka:
+  instance:
+    status-page-url: https://e8b5-181-64-18-31.ngrok.io/desktop/listar

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,13 @@ public class SolicitudController {
 
     @GetMapping(value = "listar")
     public ResponseEntity<List<Solicitud>> listSolicitudes(){
+        List<Solicitud> solicituds = new ArrayList<>();
+        solicituds = solicitudService.listar();
+        return ResponseEntity.ok(solicituds);
+    }
+
+    @GetMapping(value = "listar-solicitudes", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<Solicitud>> listAll(){
         List<Solicitud> solicituds = new ArrayList<>();
         solicituds = solicitudService.listar();
         return ResponseEntity.ok(solicituds);

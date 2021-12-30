@@ -41,7 +41,7 @@ public class SolicitudController {
         mailService.sendMail(solicituds.getCorreo(),"Solicitud Registrada", solicituds.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(solicitud);
     }
-/*
+
     @GetMapping(value = "listar")
     public ResponseEntity<List<Solicitud>> listSolicitudes(){
         List<Solicitud> solicituds = new ArrayList<>();
@@ -86,5 +86,5 @@ public class SolicitudController {
         ObjectNode objMsg = mapper.createObjectNode();
         objMsg.put("mensaje", "La solicitud con el DNI: "+dni+" ha sido eliminada.");
         return ResponseEntity.ok(objMsg);
-    }*/
+    }
 }

@@ -30,7 +30,7 @@ public class SolicitudController {
         }
         mailService.sendMail(solicituds.getCorreo(),"Solicitud Registrada", solicituds.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(solicitud);
-    }
+    }*/
 
     @GetMapping(value = "listar")
     public ResponseEntity<List<Solicitud>> listSolicitudes(){
@@ -39,7 +39,7 @@ public class SolicitudController {
         return ResponseEntity.ok(solicituds);
     }
 
-    @GetMapping(value = "consultar")
+    /*@GetMapping(value = "consultar")
     public ResponseEntity<Solicitud> listSolicitudes(@RequestParam(value = "dni") String dni){
         Solicitud sol;
         sol = solicitudService.getSolicitud(dni);

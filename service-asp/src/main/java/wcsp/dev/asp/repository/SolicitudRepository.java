@@ -6,5 +6,5 @@ import wcsp.dev.asp.entity.Solicitud;
 
 @Repository
 public interface SolicitudRepository extends JpaRepository<Solicitud,Integer> {
-
+    public Solicitud findByDni(String dni);
 }

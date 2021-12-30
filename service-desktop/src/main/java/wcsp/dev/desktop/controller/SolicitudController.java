@@ -1,5 +1,6 @@
 package wcsp.dev.desktop.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import wcsp.dev.desktop.service.mail.MailService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "desktop")
@@ -20,14 +22,14 @@ public class SolicitudController {
     @Autowired
     private MailService mailService;
 
-    @PutMapping(value = "actualizar/{nro}")
-    public ResponseEntity<Solicitud> updateSolicitud(@PathVariable("nro") Integer nro, @RequestBody ObjectNode obj){
-        Solicitud solicituds = solicitudService.updateSolicitud(nro,obj.get("estado").asText());
-        if(solicituds == null){
-            return ResponseEntity.notFound().build();
+    /*@PostMapping(value = "crear")
+    public ResponseEntity<Solicitud> saveSolicitudes(@RequestBody Solicitud solicitud){
+        Solicitud solicituds = solicitudService.createSolicitud(solicitud);
+        if(Objects.isNull(solicituds)){
+            return ResponseEntity.noContent().build();
         }
-        mailService.sendMail(solicituds.getCorreo(),"Respuesta a su solicitud", solicituds.toString());
-        return ResponseEntity.ok(solicituds);
+        mailService.sendMail(solicituds.getCorreo(),"Solicitud Registrada", solicituds.toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body(solicitud);
     }
 
     @GetMapping(value = "listar")
@@ -36,4 +38,43 @@ public class SolicitudController {
         solicituds = solicitudService.listar();
         return ResponseEntity.ok(solicituds);
     }
+
+    @GetMapping(value = "consultar")
+    public ResponseEntity<Solicitud> listSolicitudes(@RequestParam(value = "dni") String dni){
+        Solicitud sol;
+        sol = solicitudService.getSolicitud(dni);
+        if(Objects.isNull(sol)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(sol);
+    }*/
+
+    @PutMapping(value = "actualizar")
+    public ResponseEntity<Solicitud> updateSolicitud(@RequestBody ObjectNode obj){
+        Solicitud sol = solicitudService.updateSolicitud(obj.get("dni").asText(), obj.get("estado").asInt());
+        if(Objects.isNull(sol)){
+            return ResponseEntity.noContent().build();
+        }
+
+        mailService.sendMail(sol.getCorreo(),"Respuesta a su Solicitud", sol.Respuesta());
+        return ResponseEntity.ok(sol);
+    }
+/*
+    @DeleteMapping(value = "eliminar")
+    public ResponseEntity<Object> deleteSolicitudes(@RequestParam(value = "dni") String dni){
+        String msj = "";
+        if(null == dni){
+            return ResponseEntity.noContent().build();
+        }else {
+            msj = solicitudService.deleteSolicitud(dni);
+            if(msj == null){
+                return ResponseEntity.noContent().build();
+            }
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objMsg = mapper.createObjectNode();
+        objMsg.put("mensaje", "La solicitud con el DNI: "+dni+" ha sido eliminada.");
+        return ResponseEntity.ok(objMsg);
+    }*/
 }

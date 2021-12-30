@@ -6,5 +6,5 @@ import wcsp.dev.desktop.entity.Solicitud;
 
 @Repository
 public interface SolicitudRepository extends JpaRepository<Solicitud, String> {
-    public Solicitud findByNrooperacion(Integer nrooperacion);
+    public Solicitud findByDni(String dni);
 }

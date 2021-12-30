@@ -1,5 +1,7 @@
 package wcsp.dev.spa.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import wcsp.dev.spa.service.mail.MailService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "spa")
@@ -20,22 +23,68 @@ public class SolicitudController {
     @Autowired
     private MailService mailService;
 
-    @PostMapping(value = "crear")
-    public ResponseEntity<Solicitud> listSolicitudes(@RequestBody Solicitud solicitud){
-
-        Boolean ok = solicitudService.valSolicitud(solicitud.getDni());
-        if(ok == false){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+    @PostMapping(value = "registrar")
+    public ResponseEntity<Solicitud> saveSolicitudes(@RequestBody Solicitud solicitud){
+        Solicitud sol = solicitudService.getSolicitud(solicitud.getDni());
+        if(sol != null){
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode objMsg = mapper.createObjectNode();
+            objMsg.put("mensaje", "Usted ya tiene una solicitud registrada.");
+            return ResponseEntity.status(HttpStatus.LENGTH_REQUIRED).build();
         }
+
         Solicitud solicituds = solicitudService.createSolicitud(solicitud);
-        mailService.sendMail(solicituds.getCorreo(),"Respuesta a su solicitud", solicituds.toString());
+        if(Objects.isNull(solicituds)){
+            return ResponseEntity.noContent().build();
+        }
+
+        mailService.sendMail(solicituds.getCorreo(),"Solicitud Registrada", solicituds.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(solicitud);
     }
-
+/*
     @GetMapping(value = "listar")
     public ResponseEntity<List<Solicitud>> listSolicitudes(){
         List<Solicitud> solicituds = new ArrayList<>();
         solicituds = solicitudService.listar();
         return ResponseEntity.ok(solicituds);
     }
+
+    @GetMapping(value = "consultar")
+    public ResponseEntity<Solicitud> listSolicitudes(@RequestParam(value = "dni") String dni){
+        Solicitud sol;
+        sol = solicitudService.getSolicitud(dni);
+        if(Objects.isNull(sol)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(sol);
+    }
+
+    @PutMapping(value = "actualizar")
+    public ResponseEntity<Solicitud> updateSolicitud(@RequestBody ObjectNode obj){
+        Solicitud sol = solicitudService.updateSolicitud(obj.get("dni").asText(), obj.get("estado").asInt());
+        if(Objects.isNull(sol)){
+            return ResponseEntity.noContent().build();
+        }
+
+        mailService.sendMail(sol.getCorreo(),"Respuesta a su Solicitud", sol.Respuesta());
+        return ResponseEntity.ok(sol);
+    }
+
+    @DeleteMapping(value = "eliminar")
+    public ResponseEntity<Object> deleteSolicitudes(@RequestParam(value = "dni") String dni){
+        String msj = "";
+        if(null == dni){
+            return ResponseEntity.noContent().build();
+        }else {
+            msj = solicitudService.deleteSolicitud(dni);
+            if(msj == null){
+                return ResponseEntity.noContent().build();
+            }
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objMsg = mapper.createObjectNode();
+        objMsg.put("mensaje", "La solicitud con el DNI: "+dni+" ha sido eliminada.");
+        return ResponseEntity.ok(objMsg);
+    }*/
 }

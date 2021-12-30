@@ -1,61 +1,44 @@
 package wcsp.dev.spa.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.Target;
-import org.hibernate.annotations.Type;
-import wcsp.dev.spa.entity.type.Estado;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "solicitud")
+@Table(name = "financiera")
 @Data
 public class Solicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer nrooperacion;
+    private Integer id;
 
     @Column(unique = true)
-
     private String dni;
-
-    private String nombre;
-    private String otrosnombres;
-    private String apaterno;
-    private String amaterno;
-
-    @Temporal(TemporalType.DATE)
-    private Date fechanac;
-
-    private String direccion;
-    private String telefono;
+    private String nombres;
     private String correo;
-    private Double ingmensual;
-    private Double monto;
-
-    //@Enumerated(EnumType.ORDINAL)
-    private Estado estado;
-
-    @Temporal(TemporalType.DATE)
-    private Date fechasol;
+    private Double monto_solicitado;
+    private Integer numero_cuotas;
+    @Column(columnDefinition = "varchar(10) default 'PENDIENTE'")
+    private String estado;
+    private Date fecha;
 
     @Override
     public String toString() {
         return "Datos de su solicitud:\n" +
-                "nrooperacion: " + nrooperacion +
-                "\ndni: " + dni+
-                "\nnombre: " + nombre +
-                "\notrosnombres: " + otrosnombres +
-                "\napaterno: " + apaterno +
-                "\namaterno: " + amaterno +
-                "\nfechanac: " + fechanac +
-                "\ndireccion: " + direccion +
-                "\ntelefono: " + telefono +
-                "\ncorreo: " + correo +
-                "\ningmensual: " + ingmensual +
-                "\nmonto: " + monto +
-                "\nestado: " + estado +
-                "\nfechasol: " + fechasol;
+                "Nro Operación: " + id +
+                "\nDNI: " + dni+
+                "\nSolicitante: " + nombres +
+                "\nCorreo: " + correo +
+                "\nMonto Solicitado: " + monto_solicitado +
+                "\nNro Cuotas: " + numero_cuotas +
+                "\nEstado: " + estado +
+                "\nFecha Solicitud: " + new SimpleDateFormat("dd-MM-yyyy").format(fecha);
+    }
+
+    public String Respuesta() {
+        return "Su solicitud enviada la fecha "+new SimpleDateFormat("dd-MM-yyyy").format(fecha)+"\n " +
+                "por el monto de S/"+monto_solicitado+" ha sido: "+estado+"!";
     }
 }

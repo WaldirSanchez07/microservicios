@@ -7,36 +7,55 @@ import wcsp.dev.desktop.entity.Solicitud;
 import wcsp.dev.desktop.entity.type.Estado;
 import wcsp.dev.desktop.repository.SolicitudRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SolicitudServiceImpl implements SolicitudService{
-
     @Autowired
     private SolicitudRepository solicitudRepository;
 
     @Override
-    public Solicitud getSolicitud(Integer nrooperacion) {
-        return solicitudRepository.findByNrooperacion(nrooperacion);
-    }
-
-    @Override
-    public Solicitud updateSolicitud(Integer nrooperacion, String estado) {
-        Solicitud solicitud = getSolicitud(nrooperacion);
-        if(null == solicitud){
-            return null;
-        }
-        if(estado.equals("Aprobado") == true){
-            solicitud.setEstado(Estado.Aprobado);
-        }else if(estado.equals("Rechazado") == true){
-            solicitud.setEstado(Estado.Rechazado);
-        }
+    public Solicitud createSolicitud(Solicitud solicitud) {
+        solicitud.setEstado("PENDIENTE");
+        java.util.Date fecha = new Date();
+        solicitud.setFecha(fecha);
         return solicitudRepository.save(solicitud);
     }
 
     @Override
     public List<Solicitud> listar() {
         return solicitudRepository.findAll();
+    }
+
+    @Override
+    public Solicitud getSolicitud(String dni) {
+        return solicitudRepository.findByDni(dni);
+    }
+
+    @Override
+    public Solicitud updateSolicitud(String dni, Integer estado) {
+        Solicitud solicitud = getSolicitud(dni);
+        if(null == solicitud){
+            return null;
+        }
+        if(estado == 0){
+            solicitud.setEstado("RECHAZADO");
+        }else if(estado == 1){
+            solicitud.setEstado("APROBADO");
+        }
+
+        return solicitudRepository.save(solicitud);
+    }
+
+    @Override
+    public String deleteSolicitud(String dni) {
+        Solicitud sol = getSolicitud(dni);
+        if(null == sol){
+            return null;
+        }
+        solicitudRepository.delete(sol);
+        return "Eliminado";
     }
 }

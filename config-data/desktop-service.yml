@@ -4,7 +4,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: wcsp.service@gmail.com
-    password: atrtfaxrdmrozjzk
+    password: gfmtxgfwgcmlyfuj
     properties:
       mail:
         smtp:

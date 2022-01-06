@@ -26,7 +26,7 @@ spring:
           predicates:
             - Path=/spa/**
         - id: desktop-service
-          uri: https://49f1-181-64-223-16.ngrok.io/
+          uri: https://8d49-190-239-58-163.ngrok.io/
           predicates:
             - Path=/financiera/**
         - id: movile-service
